@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id                         Int                          @id
+  name                       String                       @db.VarChar(255)
+  pathktp                    String?                      @db.VarChar(255)
+  pathijazah                 String?                      @db.VarChar(255)
+  created_at                 DateTime                     @default(now())
+  updated_at                 DateTime                     @default(now())
+  auth_users                 auth_users[]
+  auth_users_departemen_team auth_users_departemen_team[]
+}
+
+model departemen {
+  id                         Int                          @id @default(autoincrement())
+  name                       String                       @db.VarChar(255)
+  departemen_team            departemen_team[]
+  auth_users                 auth_users[]
+  auth_users_departemen_team auth_users_departemen_team[]
+}
+
+model team {
+  id                         Int                          @id @default(autoincrement())
+  name                       String                       @db.VarChar(255)
+  departemen_team            departemen_team[]
+  auth_users                 auth_users[]
+  auth_users_departemen_team auth_users_departemen_team[]
+}
+
+model license {
+  id                         Int                          @id @default(autoincrement())
+  name                       String                       @db.VarChar(255)
+  auth_users_departemen_team auth_users_departemen_team[]
+}
+
+model departemen_team {
+  id           Int        @id @default(autoincrement())
+  iddepartemen Int
+  idteam       Int
+  departemen   departemen @relation(fields: [iddepartemen], references: [id])
+  team         team       @relation(fields: [idteam], references: [id])
+}
+
+model auth_users {
+  id           Int        @id @default(autoincrement())
+  iduser       Int
+  iddepartemen Int
+  idteam       Int
+  jobs         String
+  grade        String
+  users        users      @relation(fields: [iduser], references: [id])
+  departemen   departemen @relation(fields: [iddepartemen], references: [id])
+  team         team       @relation(fields: [idteam], references: [id])
+}
+
+model auth_users_departemen_team {
+  id           Int        @id @default(autoincrement())
+  iduser       Int
+  iddepartemen Int
+  idteam       Int
+  idlicense    Int
+  category     String     @db.VarChar(30)
+  status       String     @db.VarChar(30)
+  level        String?    @db.VarChar(30)
+  pathlicense  String?    @db.VarChar(255)
+  issueddate   DateTime
+  expireddate  DateTime
+  issuedyear   Int
+  expiredyear  Int
+  users        users      @relation(fields: [iduser], references: [id])
+  departemen   departemen @relation(fields: [iddepartemen], references: [id])
+  team         team       @relation(fields: [idteam], references: [id])
+  license      license    @relation(fields: [idlicense], references: [id])
+}
