@@ -91,7 +91,6 @@ class _dashboard {
             });
             const label = Object.keys(departemenCount)
             const values = Object.values(departemenCount)
-            console.log(departemenCount)
             return {
                 message: "success",
                 data: {
