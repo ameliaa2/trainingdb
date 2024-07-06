@@ -1,9 +1,9 @@
 import { Router } from "express";
 import m$filter from "../module/filter.module.js";
 const filterController = Router()
-filterController.post('/nofilter', async(req, res)=>{
+filterController.post('/filterSearch', async(req, res)=>{
     try {
-        const data = await m$filter.noFilter(req)
+        const data = await m$filter.filterSearch(req)
         res.status(200).json({message:"succes", data:data})
     } catch (error) {
         console.log(error)

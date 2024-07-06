@@ -1,43 +1,47 @@
 import prisma from "../helpers/prisma.js"
 class _filter {
-    noFilter = async (req, res) => {
+    filterSearch = async (req, res) => {
         try {
             const currentPage = req.body.currentPage
+            const payloadFilter = req.body.filters
+            const filterCondition = {}
+            if (payloadFilter.iduser) {
+                filterCondition.users = {
+                    id:Number(payloadFilter.iduser)
+                };
+            }
+            if (payloadFilter.name) {
+                filterCondition.users = {
+                    name:{
+                        contains: payloadFilter.name
+                    }
+                };
+            }
+            if (payloadFilter.iddepartemen) {
+                filterCondition.departemen = {
+                    id:Number(payloadFilter.iddepartemen)
+                }
+            }
+            if (payloadFilter.idteam) {
+                filterCondition.team = {
+                    id:Number(payloadFilter.idteam)
+                }
+            }
+            if (payloadFilter.idlicense) {
+                filterCondition.license = {
+                    id:Number(payloadFilter.idlicense)
+                }
+            }
+            if (payloadFilter.issuedyear) {
+                filterCondition.issuedyear = Number(payloadFilter.issuedyear)
+            }
+            if (payloadFilter.expiredyear) {
+                filterCondition.expiredyear = Number(payloadFilter.expiredyear)
+            }
             const limit = 3
             const skip = (currentPage - 1) * limit
-            // const data = await prisma.auth_users_departemen_team.findMany({
-            //     select:{
-            //         users:{
-            //             select:{
-            //                 id: true,
-            //                 name:true
-            //             }
-            //         },
-            //         departemen:{
-            //             select:{
-            //                 name:true
-            //             }
-            //         },
-            //         team:{
-            //             select:{
-            //                 name:true
-            //             }
-            //         },
-            //         license:{
-            //             select:{
-            //                 name:true
-            //             }
-            //         },
-            //         category:true,
-            //         level:true,
-            //         status:true,
-            //         issueddate:true,
-            //         expireddate:true
-            //     },
-            //     skip:skip,
-            //     take:limit
-            // })
             const data = await prisma.auth_users_departemen_team.findMany({
+                where: filterCondition,
                 include: {
                     users: true,
                     departemen: true,
@@ -59,7 +63,7 @@ class _filter {
                 issueddate: item.issueddate.toISOString().split('T')[0],
                 expireddate: item.expireddate.toISOString().split('T')[0],
             }))
-            const totalData = data.length
+            const totalData = await prisma.auth_users_departemen_team.count({where:filterCondition})
             const totalPage = Math.ceil(totalData / limit)
             if (data) {
                 return {
