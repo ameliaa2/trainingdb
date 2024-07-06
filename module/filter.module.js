@@ -76,6 +76,82 @@ class _filter {
             }
         } catch (error) {
             console.log(error)
+            return{
+                message:"Internal Server Error",
+                data:{
+                    totalPage:1,
+                    totalData:[]
+                }
+            }
+        }
+    }
+    listDepartemen = async()=>{
+        try {
+            const response = await prisma.departemen.findMany({
+                distinct:['name']
+            })
+            if(response){
+                const dataFormatted = response.map(item=>({
+                    value:item.id,
+                    label:item.name
+                }))
+                return{
+                    message:"success",
+                    data:dataFormatted
+                }
+            }
+        } catch (error) {
+            console.log(error.message)
+            return{
+                message:"Internal Server Error",
+                data:error.message
+            }
+        }
+    }
+    listTeam = async()=>{
+        try {
+            const response = await prisma.team.findMany({
+                distinct:['name']
+            })
+            if(response){
+                const dataFormatted = response.map(item=>({
+                    value:item.id,
+                    label:item.name
+                }))
+                return{
+                    message:"success",
+                    data:dataFormatted
+                }
+            }
+        } catch (error) {
+            console.log(error.message)
+            return{
+                message:"Internal Server Error",
+                data:error.message
+            }
+        }
+    }
+    listLicense = async()=>{
+        try {
+            const response = await prisma.license.findMany({
+                distinct:['name']
+            })
+            if(response){
+                const dataFormatted = response.map(item=>({
+                    value:item.id,
+                    label:item.name
+                }))
+                return{
+                    message:"success",
+                    data:dataFormatted
+                }
+            }
+        } catch (error) {
+            console.log(error.message)
+            return{
+                message:"Internal Server Error",
+                data:error.message
+            }
         }
     }
 }
