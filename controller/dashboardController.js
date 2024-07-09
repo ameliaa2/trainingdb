@@ -46,4 +46,13 @@ dashboard.get('/label', async (req, res)=>{
         res.status(500).json({message:"Internal Server Error"})
     }
 })
+dashboard.post('/getgrafik', async(req, res)=>{
+    const data = await m$dashboard.getGrafik(req)
+    if(data){
+        res.status(200).json(data)
+    }
+    else{
+        res.status(500).json({message:"Internal Server Error"})
+    }
+})
 export default dashboard

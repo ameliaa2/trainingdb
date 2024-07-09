@@ -79,7 +79,6 @@ class _dashboard {
                 // distinct: ['iddepartemen']
             })
             const departemenCount = {};
-
             // Mengelompokkan dan menghitung jumlah orang di setiap departemen
             distinctDepartement.forEach(item => {
                 const departemenName = item.departemen.name;
@@ -97,6 +96,50 @@ class _dashboard {
                     label:label,
                     values:values
                 }
+            }
+            // const idDepartemen = distinctDepartement.map(data=>data.iddepartemen)
+            // console.log(idDepartemen)
+            // return {
+            //     message: "success",
+            //     data: idDepartemen
+            // }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    getGrafik = async (req) => {
+        try {
+            const distinctDepartement = await prisma.auth_users_departemen_team.findMany({
+                where:{
+                    idlicense:Number(req.body.idlicense)
+                },
+                select: {
+                    departemen: {
+                        select: {
+                            name: true
+                        }
+                    }
+                }
+            })
+            const departemenCount = {};
+            // Mengelompokkan dan menghitung jumlah orang di setiap departemen
+            distinctDepartement.forEach(item => {
+                const departemenName = item.departemen.name;
+                if (departemenCount[departemenName]) {
+                    departemenCount[departemenName]++;
+                } else {
+                    departemenCount[departemenName] = 1;
+                }
+            });
+            const label = Object.keys(departemenCount)
+            const values = Object.values(departemenCount)
+            return {
+                message: "success",
+                data: {
+                    label:label,
+                    values:values
+                }
+                // data: distinctDepartement
             }
             // const idDepartemen = distinctDepartement.map(data=>data.iddepartemen)
             // console.log(idDepartemen)
