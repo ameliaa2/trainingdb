@@ -1,6 +1,7 @@
 import express from "express"
 import morgan from "morgan"
 import cors from "cors"
+import profileController from "./controller/profileController.js"
 import dashboardController from "./controller/dashboardController.js"
 import filterController from "./controller/filterController.js"
 import excelController from "./controller/excelController.js"
@@ -17,6 +18,7 @@ app.get("/",(req, res)=>{
 app.use(dashboardController)
 app.use(filterController)
 app.use(excelController)
+app.use(profileController)
 app.listen(5000,()=>{
     console.log(`Your application running in http://localhost:5000`)
 })

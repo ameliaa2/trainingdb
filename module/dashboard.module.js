@@ -11,6 +11,9 @@ class _dashboard {
             }
         } catch (error) {
             console.log(error)
+            return {
+                message: error
+            }
         }
     }
     countLicense = async () => {

@@ -1,38 +1,38 @@
 import prisma from "../helpers/prisma.js"
 class _excel {
-    createUser = async (req) => {
-        try {
-            const usersToAdd = req.body.datausers
-            const existingUsers = await prisma.users.findMany({
-                select: { id: true },
-            });
-            const existingUserIds = existingUsers.map(user => user.id);
-            // Filter out users that already exist
-            const newUsers = usersToAdd.filter(user => !existingUserIds.includes(user.id));
-            if (newUsers) {
-                if (newUsers.length !== 0) {
-                    // Add new users
-                    // const createdUsers = await prisma.users.createMany({
-                    //     data: newUsers,
-                    // });
-                    return {
-                        message: "Any New Data",
-                        data: newUsers
-                    }
-                }
-                return {
-                    message: "Not Any New Data",
-                    data: newUsers
-                }
-            }
-        } catch (error) {
-            console.log(error)
-            return {
-                message: "Internal Server Error",
-                data: error
-            }
-        }
-    }
+    // createUser = async (req) => {
+    //     try {
+    //         const usersToAdd = req.body.datausers
+    //         const existingUsers = await prisma.users.findMany({
+    //             select: { id: true },
+    //         });
+    //         const existingUserIds = existingUsers.map(user => user.id);
+    //         // Filter out users that already exist
+    //         const newUsers = usersToAdd.filter(user => !existingUserIds.includes(user.id));
+    //         if (newUsers) {
+    //             if (newUsers.length !== 0) {
+    //                 // Add new users
+    //                 // const createdUsers = await prisma.users.createMany({
+    //                 //     data: newUsers,
+    //                 // });
+    //                 return {
+    //                     message: "Any New Data",
+    //                     data: newUsers
+    //                 }
+    //             }
+    //             return {
+    //                 message: "Not Any New Data",
+    //                 data: newUsers
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //         return {
+    //             message: "Internal Server Error",
+    //             data: error
+    //         }
+    //     }
+    // }
     validateDepartemen = async (req) => {
         try {
             const request = req.body.datadepartemen

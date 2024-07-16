@@ -7,7 +7,7 @@ dashboard.get('/users', async (req, res)=>{
         res.status(200).json(data)
     }
     else{
-        res.status(500).json({message:"Internal Server Error"})
+        res.status(500).json({message:data})
     }
 })
 dashboard.get('/license', async (req, res)=>{

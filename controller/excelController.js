@@ -1,14 +1,14 @@
 import { Router } from "express"
 import m$excel from "../module/excel.module.js"
 const excelController = Router()
-excelController.post('/excel/createuser', async(req, res)=>{
-    try {
-        const data = await m$excel.createUser(req)
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(500).json(data)
-    }
-})
+// excelController.post('/excel/createuser', async(req, res)=>{
+//     try {
+//         const data = await m$excel.createUser(req)
+//         res.status(200).json(data)
+//     } catch (error) {
+//         res.status(500).json(data)
+//     }
+// })
 excelController.post('/excel/cekiduser', async(req, res)=>{
     try {
         const data = await m$excel.existingUserId(req)
