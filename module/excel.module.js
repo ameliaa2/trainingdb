@@ -47,14 +47,14 @@ class _excel {
             if (difference) {
                 if (difference.length !== 0) {
                     //Tambah data Departemen Baru
-                    const data = difference.map(item=>({
-                        name:item
+                    const data = difference.map(item => ({
+                        name: item
                     }))
-                    const addNewData = await prisma.departemen.createMany({data:data})
-                    if(addNewData){
-                        return{
-                            message:"Success Add New Data",
-                            data:addNewData
+                    const addNewData = await prisma.departemen.createMany({ data: data })
+                    if (addNewData) {
+                        return {
+                            message: "Success Add New Data",
+                            data: addNewData
                         }
                     }
                     // return {
@@ -89,14 +89,14 @@ class _excel {
             if (difference) {
                 if (difference.length !== 0) {
                     //Tambah data Team Baru
-                    const data = difference.map(item=>({
-                        name:item
+                    const data = difference.map(item => ({
+                        name: item
                     }))
-                    const addNewData = await prisma.team.createMany({data:data})
-                    if(addNewData){
-                        return{
-                            message:"Success Add New Data",
-                            data:addNewData
+                    const addNewData = await prisma.team.createMany({ data: data })
+                    if (addNewData) {
+                        return {
+                            message: "Success Add New Data",
+                            data: addNewData
                         }
                     }
                     // return {
@@ -131,14 +131,14 @@ class _excel {
             if (difference) {
                 if (difference.length !== 0) {
                     //Tambah data License Baru
-                    const data = difference.map(item=>({
-                        name:item
+                    const data = difference.map(item => ({
+                        name: item
                     }))
-                    const addNewData = await prisma.license.createMany({data:data})
-                    if(addNewData){
-                        return{
-                            message:"Success Add New Data",
-                            data:addNewData
+                    const addNewData = await prisma.license.createMany({ data: data })
+                    if (addNewData) {
+                        return {
+                            message: "Success Add New Data",
+                            data: addNewData
                         }
                     }
                     // return {
@@ -191,11 +191,11 @@ class _excel {
                 const existingUser = await prisma.users.findFirst({
                     where: { id: ID }
                 });
-                if(existingUser === null){
-                    const createuser=await prisma.users.create({
-                        data:{
-                            id:ID,
-                            name:Name
+                if (existingUser === null) {
+                    const createuser = await prisma.users.create({
+                        data: {
+                            id: ID,
+                            name: Name
                         }
                     })
                     console.log(createuser)
@@ -214,28 +214,23 @@ class _excel {
                         },
                     });
                 }
-                const existingAuthUserDepartemenTeamLicense = await prisma.auth_users_departemen_team.findFirst({
-                    where: { iduser: ID }
-                })
-                if (existingAuthUserDepartemenTeamLicense === null) {
-                    // Add to the 'auth_users_departemen_team' table
-                    await prisma.auth_users_departemen_team.create({
-                        data: {
-                            iduser: ID,
-                            iddepartemen: departemen.id,
-                            idteam: team.id,
-                            idlicense: license.id,
-                            category: Category,
-                            status: Status,
-                            level: Level ? String(Level) : null,
-                            pathlicense: null, // Assuming pathlicense is not provided in input
-                            issueddate: new Date(Math.round((IssuedDate - 25569)*86400*1000)),
-                            expireddate: new Date(Math.round((ExpirationDate - 25569)*86400*1000)),
-                            issuedyear: Yearly,
-                            expiredyear: Year,
-                        },
-                    });
-                }
+                // Add to the 'auth_users_departemen_team' table
+                await prisma.auth_users_departemen_team.create({
+                    data: {
+                        iduser: ID,
+                        iddepartemen: departemen.id,
+                        idteam: team.id,
+                        idlicense: license.id,
+                        category: Category,
+                        status: Status,
+                        level: Level ? String(Level) : null,
+                        pathlicense: null, // Assuming pathlicense is not provided in input
+                        issueddate: new Date(Math.round((IssuedDate - 25569) * 86400 * 1000)),
+                        expireddate: new Date(Math.round((ExpirationDate - 25569) * 86400 * 1000)),
+                        issuedyear: Yearly,
+                        expiredyear: Year,
+                    },
+                });
             }
             return {
                 message: "success"
@@ -253,7 +248,7 @@ class _excel {
         try {
             const iduser = req.body.iduser
             const tes = req.body.tes
-            const {level} = tes
+            const { level } = tes
             console.log('ini tes level', level)
             console.log(iduser)
             const existingAuthUser = await prisma.auth_users.findFirst({
@@ -272,10 +267,10 @@ class _excel {
             }
         }
     }
-    cekAja = async()=>{
+    cekAja = async () => {
         try {
             const countdata = await prisma.auth_users_departemen_team.count()
-            if(countdata){
+            if (countdata) {
                 return {
                     message: "Success",
                     data: countdata

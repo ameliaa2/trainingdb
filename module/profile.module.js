@@ -15,7 +15,7 @@ class _profile {
                 }
             })
             const dataFormatted = {
-                id: 106734,
+                id: getUser.id,
                 name: getUser.name,
                 pathktp: getUser.pathktp,
                 pathijazah: getUser.pathijazah,
