@@ -10,6 +10,14 @@ profileController.post('/profile/get', async(req, res)=>{
     }
 
 })
+profileController.put('/profile/uploadFoto', async(req, res)=>{
+    try {
+        const data = await m$profile.uploadFoto(req)
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json(data)
+    }
+})
 profileController.post('/profile/uploadKtp', async(req, res)=>{
     try {
         const data = await m$profile.uploadKtp(req)

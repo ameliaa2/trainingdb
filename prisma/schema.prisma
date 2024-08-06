@@ -15,9 +15,10 @@ datasource db {
 
 model users {
   id                         Int                          @id
-  name                       String                       @db.VarChar(255)
-  pathktp                    String?                      @db.VarChar(255)
-  pathijazah                 String?                      @db.VarChar(255)
+  name                       String                       @db.Text
+  pathktp                    String?                      @db.Text
+  pathijazah                 String?                      @db.Text
+  pathphoto                  String?                      @db.Text
   created_at                 DateTime                     @default(now())
   updated_at                 DateTime                     @default(now())
   auth_users                 auth_users[]
@@ -26,7 +27,7 @@ model users {
 
 model departemen {
   id                         Int                          @id @default(autoincrement())
-  name                       String                       @db.VarChar(255)
+  name                       String?                       @db.VarChar(255)
   departemen_team            departemen_team[]
   auth_users                 auth_users[]
   auth_users_departemen_team auth_users_departemen_team[]
@@ -76,10 +77,13 @@ model auth_users_departemen_team {
   status       String     @db.VarChar(30)
   level        String?    @db.VarChar(30)
   pathlicense  String?    @db.VarChar(255)
-  issueddate   DateTime
-  expireddate  DateTime
+  institusi    String?    @db.VarChar(255)
+  certificationCategory    String?    @db.VarChar(255)
+  remarks      String?    @db.Text
+  issueddate   DateTime?
+  expireddate  DateTime?
   issuedyear   Int
-  expiredyear  Int
+  expiredyear  Int?
   users        users      @relation(fields: [iduser], references: [id])
   departemen   departemen @relation(fields: [iddepartemen], references: [id])
   team         team       @relation(fields: [idteam], references: [id])

@@ -18,6 +18,7 @@ class _profile {
                 id: getUser.id,
                 name: getUser.name,
                 pathktp: getUser.pathktp,
+                pathphoto: getUser.pathphoto,
                 pathijazah: getUser.pathijazah,
                 created_at: getUser.created_at,
                 updated_at: getUser.updated_at,
@@ -30,6 +31,28 @@ class _profile {
                 return {
                     message: "Success",
                     data: dataFormatted
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            return {
+                message: "Internal Server Error",
+                data: error
+            }
+        }
+    }
+    uploadFoto = async (req) => {
+        try {
+            const payload = req.body
+            const { pathphoto, iduser } = payload
+            const edit = await prisma.users.update({
+                where: { id: iduser },
+                data: { pathphoto: pathphoto }
+            })
+            if (edit) {
+                return {
+                    message: "Success",
+                    data: edit
                 }
             }
         } catch (error) {

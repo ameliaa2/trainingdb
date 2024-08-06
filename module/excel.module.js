@@ -177,7 +177,10 @@ class _excel {
                     Year,
                     Category,
                     Status,
-                    Level
+                    Level,
+                    Institusi,
+                    CertificationCategory,
+                    Remark,
                 } = user;
                 const departemen = await prisma.departemen.findFirst({
                     where: { name: Dept },
@@ -230,12 +233,15 @@ class _excel {
                             idlicense: license.id,
                             category: Category,
                             status: Status,
+                            certificationCategory:CertificationCategory,
+                            remarks:Remark,
+                            institusi:Institusi,
                             level: Level ? String(Level) : null,
                             pathlicense: null, // Assuming pathlicense is not provided in input
-                            issueddate: new Date(Math.round((IssuedDate - 25569) * 86400 * 1000)),
-                            expireddate: new Date(Math.round((ExpirationDate - 25569) * 86400 * 1000)),
+                            issueddate: IssuedDate || IssuedDate === '-' ? new Date(Math.round((IssuedDate - 25569) * 86400 * 1000)) : null,
+                            expireddate: !ExpirationDate || ExpirationDate === '-' || ExpirationDate === 'Unlimited' ? null : new Date(Math.round((ExpirationDate - 25569) * 86400 * 1000)),
                             issuedyear: Yearly,
-                            expiredyear: Year,
+                            expiredyear: Year ? Year:null,
                         },
                     });
                 }

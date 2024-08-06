@@ -74,8 +74,11 @@ class _filter {
                     category: item.category,
                     level: item.level,
                     status: item.status,
-                    issueddate: item.issueddate.toISOString().split('T')[0],
-                    expireddate: item.expireddate.toISOString().split('T')[0],
+                    institusi: item.institusi,
+                    certificationCategory: item.certificationCategory,
+                    remark: item.remarks,
+                    issueddate: item.issueddate? item.issueddate.toISOString().split('T')[0]:'',
+                    expireddate: item.expireddate? item.expireddate.toISOString().split('T')[0]:'',
                 }))
                 return result
             }

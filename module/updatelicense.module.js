@@ -29,9 +29,19 @@ class _updatelicense {
             }
 
             let updateResult;
-
+            if (payload.editName === '') {
+                // Perbarui pathlicense pada tabel auth_users_departemen_team
+                updateResult = await prisma.auth_users_departemen_team.update({
+                    where: {
+                        id: index.id
+                    },
+                    data: {
+                        pathlicense: payload.pathlicense
+                    }
+                });
+            }
             // Perbarui nama lisensi jika ada perubahan
-            if (payload.editName) {
+            else {
                 const validateName = await prisma.license.findFirst({
                     where: {
                         name: payload.editName
@@ -67,22 +77,38 @@ class _updatelicense {
                         }
                     });
                 }
-            } else {
-                // Perbarui pathlicense pada tabel auth_users_departemen_team
-                updateResult = await prisma.auth_users_departemen_team.update({
-                    where: {
-                        id: index.id
-                    },
-                    data: {
-                        pathlicense: payload.pathlicense
-                    }
-                });
             }
             console.log(updateResult)
             return {
                 message: 'Update License Success',
                 data: updateResult
             };
+        } catch (error) {
+            console.log(error.message);
+            return {
+                message: "Internal Server Error",
+                data: error.message
+            };
+        }
+    }
+    deleteLicense= async(req, res)=>{
+        try {
+            const idauthlicense = req.body.idauthlicense
+            const idlicense = req.body.idlicense
+            const deleteLicense = await prisma.auth_users_departemen_team.delete({
+                where:{
+                    iduser:idauthlicense,
+                    license:{
+                        id:idlicense
+                    }
+                }
+            })
+            if(deleteLicense){
+                return {
+                    message: 'Delete License Success',
+                    data: deleteLicense
+                };
+            }
         } catch (error) {
             console.log(error.message);
             return {
