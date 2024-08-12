@@ -206,7 +206,7 @@ class _excel {
                 const existingAuthUser = await prisma.auth_users.findFirst({
                     where: { iduser: ID }
                 });
-                if (existingAuthUser === null) {
+                if (!existingAuthUser) {
                     await prisma.auth_users.create({
                         data: {
                             iduser: ID,
@@ -220,12 +220,14 @@ class _excel {
                 const existingAuthUserDepartemenTeamLicense = await prisma.auth_users_departemen_team.findFirst({
                     where: {
                         iduser: ID,
-                        idlicense: license.id
+                        idlicense: license.id,
+                        level:Level?String(Level):null,
+                        issuedyear:Yearly
                     }
                 })
-                if (existingAuthUserDepartemenTeamLicense === null) {
+                if (!existingAuthUserDepartemenTeamLicense) {
                     // Add to the 'auth_users_departemen_team' table
-                    await prisma.auth_users_departemen_team.create({
+                    const addData = await prisma.auth_users_departemen_team.create({
                         data: {
                             iduser: ID,
                             iddepartemen: departemen.id,
@@ -238,16 +240,18 @@ class _excel {
                             institusi:Institusi,
                             level: Level ? String(Level) : null,
                             pathlicense: null, // Assuming pathlicense is not provided in input
-                            issueddate: IssuedDate || IssuedDate === '-' ? new Date(Math.round((IssuedDate - 25569) * 86400 * 1000)) : null,
-                            expireddate: !ExpirationDate || ExpirationDate === '-' || ExpirationDate === 'Unlimited' ? null : new Date(Math.round((ExpirationDate - 25569) * 86400 * 1000)),
+                            issueddate: IssuedDate  ? new Date(Math.round((IssuedDate - 25569) * 86400 * 1000)) : null,
+                            expireddate: !ExpirationDate  || ExpirationDate === 'Unlimited' ? null : new Date(Math.round((ExpirationDate - 25569) * 86400 * 1000)),
                             issuedyear: Yearly,
                             expiredyear: Year ? Year:null,
                         },
                     });
+                    console.log(addData)
                 }
             }
             return {
-                message: "success"
+                message: "success",
+                // result:result
             }
         }
         catch (error) {
